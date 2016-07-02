@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A3AF07FD-9976-4601-A7D5-D82866547723}</ProjectGuid>
+    <ProjectGuid>{8AA49ED2-CED3-4082-8D9E-A2CBB789C582}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RegistrationSystem.UnitTests</RootNamespace>
-    <AssemblyName>RegistrationSystem.UnitTests</AssemblyName>
+    <RootNamespace>Consultations.Contract</RootNamespace>
+    <AssemblyName>Consultations.Contract</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,48 +30,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.3.4.0\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsultationBookerTests.cs" />
-    <Compile Include="ConsultationRepositoryTests.cs" />
+    <Compile Include="ConditionType.cs" />
+    <Compile Include="Consultation.cs" />
+    <Compile Include="IConsultationsRepository.cs" />
+    <Compile Include="PatientRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceCalendarTests.cs" />
-    <Compile Include="ResourcesRepositoryTests.cs" />
-    <Compile Include="ResourceCreator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Consultations.Contract\Consultations.Contract.csproj">
-      <Project>{8aa49ed2-ced3-4082-8d9e-a2cbb789c582}</Project>
-      <Name>Consultations.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\RegistrationSystem.Contract\RegistrationSystem.Contract.csproj">
-      <Project>{11091d05-c3f3-483b-a416-302565b31dad}</Project>
-      <Name>RegistrationSystem.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\RegistrationSystem.DI\RegistrationSystem.DI.csproj">
-      <Project>{4bd00a7a-ad30-42ca-a763-e96cfa192b2e}</Project>
-      <Name>RegistrationSystem.DI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Resources.Contract\Resources.Contract.csproj">
+    <ProjectReference Include="..\Resources.Contract\Resources.Contract.csproj">
       <Project>{4873f341-2cc7-4a6a-8d64-75506ba6a67f}</Project>
       <Name>Resources.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Scheduler.Contract\Scheduler.Contract.csproj">
-      <Project>{ae02272b-a678-4470-87ae-495650534fd5}</Project>
-      <Name>Scheduler.Contract</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

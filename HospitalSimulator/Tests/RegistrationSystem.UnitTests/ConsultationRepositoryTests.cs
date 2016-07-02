@@ -9,13 +9,13 @@ namespace RegistrationSystem.UnitTests
     public class ConsultationRepositoryTests
     {
         private IConsultationsRepository _consultationsRepository;
-        private readonly Factory _factory = new Factory();
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            _factory.BindDependencies();
-            _consultationsRepository = _factory.ConsultationsRepository;
+            var factory = new Factory();
+            factory.BindDependencies();
+            _consultationsRepository = factory.ConsultationsRepository;
         }
 
         [SetUp]

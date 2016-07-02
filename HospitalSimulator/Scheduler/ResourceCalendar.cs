@@ -18,10 +18,11 @@ namespace Scheduler
         private readonly IConsultationsRepository _consultationsRepository;
         private Dictionary<string, CalenderDay[]> _doctorsCalendars;
         private Dictionary<string, CalenderDay[]> _roomsCalendars;
-        private DateTime _startDate;
-        private int _numberOfDays;
         private Dictionary<DateTime, int> _dateToIndexMap;
         private bool _isInitated = false;
+
+        public DateTime CalendarStartDate { get; private set; }
+        public int CalendarSize { get; private set; }
 
         public ResourceCalendar(IResourcesRepository resourcesRepository, IConsultationsRepository consultationsRepository)
         {
@@ -31,14 +32,14 @@ namespace Scheduler
 
         public void Generate(DateTime fromDate, int sizeInDays)
         {
-            _startDate = fromDate;
-            _numberOfDays = sizeInDays;
+            CalendarStartDate = fromDate.Date;
+            CalendarSize = sizeInDays;
 
-            _dateToIndexMap = CreateDateToIndexMap(fromDate, _numberOfDays);
+            _dateToIndexMap = CreateDateToIndexMap(CalendarStartDate, CalendarSize);
 
-            _doctorsCalendars = CreateEmptyDoctorsCalendars(_numberOfDays, _resourcesRepository);
+            _doctorsCalendars = CreateEmptyDoctorsCalendars(CalendarSize, _resourcesRepository);
 
-            _roomsCalendars = CreateEmptyRoomsCalendars(_numberOfDays, _resourcesRepository);
+            _roomsCalendars = CreateEmptyRoomsCalendars(CalendarSize, _resourcesRepository);
 
             FillCalendarsWithExisitingConsultationBookings(_dateToIndexMap,_doctorsCalendars,_roomsCalendars,_consultationsRepository);
 
@@ -56,9 +57,7 @@ namespace Scheduler
             }
 
             int firstDayIndex = _dateToIndexMap[earliestDate.Date];
-            int numDaysToCheck = _numberOfDays - firstDayIndex;
-
-            var doctorRoleConditionMap = new DoctorRoleConditionMap();
+            int numDaysToCheck = CalendarSize - firstDayIndex;
 
             for (int day = firstDayIndex; day <= numDaysToCheck; day++)
             {
@@ -70,7 +69,7 @@ namespace Scheduler
                     var doctorName = doctorNameCalendar.Key;
                     var docCal = doctorNameCalendar.Value;
 
-                    if (!IsDoctorSuitableAndFree(doctorName, day, docCal, condition, doctorRoleConditionMap, _resourcesRepository))
+                    if (!IsDoctorSuitableAndFree(doctorName, day, docCal, condition, _resourcesRepository))
                         continue;
 
                     //
@@ -88,7 +87,7 @@ namespace Scheduler
                             //
                             var newConsultation = new Consultation
                             {
-                                ConsultationDate = _startDate.Date.AddDays(day),
+                                ConsultationDate = CalendarStartDate.Date.AddDays(day),
                                 Doctor = _resourcesRepository.GetDoctorByName(doctorName),
                                 PatientName = patientName,
                                 Room = _resourcesRepository.GetRoomByName(roomNameCalendar.Key),
@@ -115,18 +114,7 @@ namespace Scheduler
             if (!_isInitated)
                 throw new ResourceCalendarException("The ResourceCalendar is not initated.");
 
-            int numSchedulations = 0;
-            foreach (var doctorNameCalendar in _doctorsCalendars)
-            {
-                var doctorCalendar = doctorNameCalendar.Value;
-                foreach (var calDay in doctorCalendar)
-                {
-                    if (calDay != null)
-                        numSchedulations++;
-                }
-            }
-
-            return numSchedulations;
+            return _doctorsCalendars.SelectMany(doctorNameCalendar => doctorNameCalendar.Value).Count(calDay => calDay != null);
         }
 
         public int NumRoomSchedulations()
@@ -134,18 +122,7 @@ namespace Scheduler
             if (!_isInitated)
                 throw new ResourceCalendarException("The ResourceCalendar is not initated.");
 
-            int numSchedulations = 0;
-            foreach (var roomNameCalendar in _roomsCalendars)
-            {
-                var roomCalendar = roomNameCalendar.Value;
-                foreach (var calDay in roomCalendar)
-                {
-                    if (calDay != null)
-                        numSchedulations++;
-                }
-            }
-
-            return numSchedulations;
+            return _roomsCalendars.SelectMany(roomNameCalendar => roomNameCalendar.Value).Count(calDay => calDay != null);
         }
 
         public void RemoveConsultationFromCalendars(string id)
@@ -189,7 +166,7 @@ namespace Scheduler
                 _dateToIndexMap.Clear();
         }
 
-        private bool IsDoctorSuitableAndFree(string doctorName, int day, CalenderDay[] docCal, ConditionType condition, DoctorRoleConditionMap doctorRoleConditionMap, IResourcesRepository resourcesRepository)
+        private bool IsDoctorSuitableAndFree(string doctorName, int day, CalenderDay[] docCal, ConditionType condition, IResourcesRepository resourcesRepository)
         {
             var doctor = resourcesRepository.GetDoctorByName(doctorName);
             if (doctor == null) return false;
@@ -197,7 +174,7 @@ namespace Scheduler
             bool okDoctorForCondition = false;
             foreach (var role in doctor.Roles)
             {
-                if (doctorRoleConditionMap.CanRoleHandeCondition(role, condition))
+                if (DoctorRoleConditionMap.CanRoleHandeCondition(role, condition))
                     okDoctorForCondition = true;
             }
 

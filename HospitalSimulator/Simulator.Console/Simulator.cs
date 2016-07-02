@@ -18,10 +18,9 @@ namespace Simulator.Console
         public void Init(DateTime calenderStartDate, int calenderSize)
         {
             var factory = new RegistrationSystem.DI.Factory();
+            factory.BindDependencies();
 
             _resultHelper = new PrintHelper();
-
-            factory.BindDependencies();
 
             _resourcesRepository = factory.ResourcesRepository;
 

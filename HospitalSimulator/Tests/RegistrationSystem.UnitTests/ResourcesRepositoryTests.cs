@@ -8,13 +8,13 @@ namespace RegistrationSystem.UnitTests
     class ResourcesRepositoryTests
     {
         private IResourcesRepository _resourceRepository;
-        private readonly Factory _factory = new Factory();
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            _factory.BindDependencies();
-            _resourceRepository = _factory.ResourcesRepository;
+            var factory = new Factory();
+            factory.BindDependencies();
+            _resourceRepository = factory.ResourcesRepository;
         }
 
         [SetUp]

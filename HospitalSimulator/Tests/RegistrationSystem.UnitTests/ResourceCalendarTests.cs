@@ -15,16 +15,16 @@ namespace RegistrationSystem.UnitTests
         private IResourceCalendar _resourceCalendar;
         private IConsultationsRepository _consultationsRepository;
         private DateTime _today;
-        private readonly Factory _factory = new Factory();
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            _factory.BindDependencies();
+            var factory = new Factory();
+            factory.BindDependencies();
+            _resourceRepository = factory.ResourcesRepository;
+            _resourceCalendar = factory.ResourceCalendar;
+            _consultationsRepository = factory.ConsultationsRepository;
             _resourceCreator = new ResourceCreator();
-            _resourceRepository = _factory.ResourcesRepository;
-            _resourceCalendar = _factory.ResourceCalendar;
-            _consultationsRepository = _factory.ConsultationsRepository;
         }
 
         [SetUp]
