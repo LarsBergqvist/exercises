@@ -69,7 +69,7 @@ namespace RegistrationSystem
             _resourceCalendar.RemoveConsultationFromCalendars(id);
         }
 
-        public void Init(DateTime calenderStartDate, int sizeInDays)
+        public void Init(DateTime calenderStartDate, uint sizeInDays)
         {
             _resourceCalendar.Generate(calenderStartDate, sizeInDays);
         }

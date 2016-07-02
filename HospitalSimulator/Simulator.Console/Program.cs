@@ -6,26 +6,25 @@ namespace Simulator.Console
     {
         static void Main(string[] args)
         {
-            int calenderSize = 365;
+            uint calenderSize = 365;
             DateTime today = DateTime.Now.Date;
 
-            var sim = new global::Simulator.Console.Simulator();
-            sim.Init(today, calenderSize);
-
-            if (args.Length == 2)
+            if (args.Length >= 1)
             {
-                int newCalSize;
-                if (int.TryParse(args[1],out newCalSize))
+                uint newCalSize;
+                if (uint.TryParse(args[0],out newCalSize))
                 {
                     calenderSize = newCalSize;
                 }
             }
+            var sim = new Simulator();
+            sim.Init(today, calenderSize);
 
             System.Console.WriteLine("Calender size is {0} days.",calenderSize);
 
-            if (args.Length >= 1)
+            if (args.Length >= 2)
             {
-                sim.LoadAndProcessRequestFile(args[0], today);
+                sim.LoadAndProcessRequestFile(args[1], today);
             }
             else
             {

@@ -47,6 +47,6 @@ namespace RegistrationSystem.Contract
         /// <returns></returns>
         void RemoveScheduledConsultation(string id);
 
-        void Init(DateTime calenderStartDate, int sizeInDays);
+        void Init(DateTime calenderStartDate, uint sizeInDays);
     }
 }

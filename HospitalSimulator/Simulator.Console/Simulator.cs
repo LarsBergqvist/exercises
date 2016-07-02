@@ -15,7 +15,7 @@ namespace Simulator.Console
             MenuLoop();
         }
 
-        public void Init(DateTime calenderStartDate, int calenderSize)
+        public void Init(DateTime calenderStartDate, uint calenderSize)
         {
             var factory = new RegistrationSystem.DI.Factory();
             factory.BindDependencies();

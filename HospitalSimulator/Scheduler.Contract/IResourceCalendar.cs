@@ -19,7 +19,7 @@ namespace Scheduler.Contract
         /// <param name="fromDate">The first date in the calendar</param>
         /// <param name="sizeInDays">The size of the calendar in days</param>
         /// <returns></returns>
-        void Generate(DateTime fromDate, int sizeInDays);
+        void Generate(DateTime fromDate, uint sizeInDays);
 
         /// <summary>
         /// Schedules the first available consultation date with resources based on the specified condition

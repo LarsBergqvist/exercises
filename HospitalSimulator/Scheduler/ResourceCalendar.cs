@@ -18,11 +18,11 @@ namespace Scheduler
         private readonly IConsultationsRepository _consultationsRepository;
         private Dictionary<string, CalenderDay[]> _doctorsCalendars;
         private Dictionary<string, CalenderDay[]> _roomsCalendars;
-        private Dictionary<DateTime, int> _dateToIndexMap;
+        private Dictionary<DateTime, uint> _dateToIndexMap;
         private bool _isInitated = false;
 
         public DateTime CalendarStartDate { get; private set; }
-        public int CalendarSize { get; private set; }
+        public uint CalendarSize { get; private set; }
 
         public ResourceCalendar(IResourcesRepository resourcesRepository, IConsultationsRepository consultationsRepository)
         {
@@ -30,7 +30,7 @@ namespace Scheduler
             _consultationsRepository = consultationsRepository;
         }
 
-        public void Generate(DateTime fromDate, int sizeInDays)
+        public void Generate(DateTime fromDate, uint sizeInDays)
         {
             CalendarStartDate = fromDate.Date;
             CalendarSize = sizeInDays;
@@ -56,10 +56,10 @@ namespace Scheduler
                 throw new ResourceCalendarException(string.Format("The requested consultation date {0} is beyond the limits of this calendar.",earliestDate.Date));
             }
 
-            int firstDayIndex = _dateToIndexMap[earliestDate.Date];
-            int numDaysToCheck = CalendarSize - firstDayIndex;
+            uint firstDayIndex = _dateToIndexMap[earliestDate.Date];
+            uint numDaysToCheck = CalendarSize - firstDayIndex;
 
-            for (int day = firstDayIndex; day <= numDaysToCheck; day++)
+            for (uint day = firstDayIndex; day <= numDaysToCheck; day++)
             {
                 foreach (var doctorNameCalendar in _doctorsCalendars)
                 {
@@ -166,7 +166,7 @@ namespace Scheduler
                 _dateToIndexMap.Clear();
         }
 
-        private bool IsDoctorSuitableAndFree(string doctorName, int day, CalenderDay[] docCal, ConditionType condition, IResourcesRepository resourcesRepository)
+        private bool IsDoctorSuitableAndFree(string doctorName, uint day, CalenderDay[] docCal, ConditionType condition, IResourcesRepository resourcesRepository)
         {
             var doctor = resourcesRepository.GetDoctorByName(doctorName);
             if (doctor == null) return false;
@@ -189,7 +189,7 @@ namespace Scheduler
             return true;
         }
 
-        private bool IsRoomSuitableAndFree(string roomName, int dayNo, CalenderDay[] roomCal, ConditionType condition, IResourcesRepository resourcesRepository)
+        private bool IsRoomSuitableAndFree(string roomName, uint dayNo, CalenderDay[] roomCal, ConditionType condition, IResourcesRepository resourcesRepository)
         {
             var room = resourcesRepository.GetRoomByName(roomName);
             if (room == null) return false;
@@ -207,11 +207,11 @@ namespace Scheduler
             return true;
         }
 
-        private Dictionary<DateTime, int> CreateDateToIndexMap(DateTime fromDate, int numberOfDays)
+        private Dictionary<DateTime, uint> CreateDateToIndexMap(DateTime fromDate, uint numberOfDays)
         {
-            var dateToIndexMap = new Dictionary<DateTime, int>();
+            var dateToIndexMap = new Dictionary<DateTime, uint>();
 
-            for (int day = 0; day < numberOfDays; day++)
+            for (uint day = 0; day < numberOfDays; day++)
             {
                 dateToIndexMap.Add(fromDate.Date.AddDays(day), day);
             }
@@ -219,7 +219,7 @@ namespace Scheduler
             return dateToIndexMap;
         }
 
-        Dictionary<string, CalenderDay[]> CreateEmptyDoctorsCalendars(int numberOfDays, IResourcesRepository resourcesRepository)
+        Dictionary<string, CalenderDay[]> CreateEmptyDoctorsCalendars(uint numberOfDays, IResourcesRepository resourcesRepository)
         {
             var doctorsCalendars = new Dictionary<string, CalenderDay[]>();
             foreach (var doctor in resourcesRepository.GetAllDoctors())
@@ -231,7 +231,7 @@ namespace Scheduler
             return doctorsCalendars;
         }
 
-        Dictionary<string, CalenderDay[]> CreateEmptyRoomsCalendars(int numberOfDays, IResourcesRepository resourcesRepository)
+        Dictionary<string, CalenderDay[]> CreateEmptyRoomsCalendars(uint numberOfDays, IResourcesRepository resourcesRepository)
         {
             var roomsCalendars = new Dictionary<string, CalenderDay[]>();
             var rooms = resourcesRepository.GetAllRooms().OrderBy(x => x.HasTreatmentMachine());
@@ -244,7 +244,7 @@ namespace Scheduler
             return roomsCalendars;
         }
 
-        private void FillCalendarsWithExisitingConsultationBookings(Dictionary<DateTime, int> dateToIndexMap, Dictionary<string, CalenderDay[]> doctorsCalendars, Dictionary<string, CalenderDay[]> roomsCalendars, IConsultationsRepository consultationsRepository)
+        private void FillCalendarsWithExisitingConsultationBookings(Dictionary<DateTime, uint> dateToIndexMap, Dictionary<string, CalenderDay[]> doctorsCalendars, Dictionary<string, CalenderDay[]> roomsCalendars, IConsultationsRepository consultationsRepository)
         {
             foreach (var consultation in consultationsRepository.GetAllConsultations())
             {
@@ -253,7 +253,7 @@ namespace Scheduler
                 DateTime date = consultation.ConsultationDate.Date;
                 if (dateToIndexMap.ContainsKey(date))
                 {
-                    int dayIndex = _dateToIndexMap[date];
+                    uint dayIndex = _dateToIndexMap[date];
                     if (doctorsCalendars.ContainsKey(doctorName))
                     {
                         doctorsCalendars[doctorName][dayIndex] = new CalenderDay() { BookedConsultation = consultation };
