@@ -49,25 +49,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Consultations.Contract\Consultations.Contract.csproj">
+    <ProjectReference Include="..\..\Contracts\Consultations.Contract\Consultations.Contract.csproj">
       <Project>{8aa49ed2-ced3-4082-8d9e-a2cbb789c582}</Project>
       <Name>Consultations.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\RegistrationSystem.Contract\RegistrationSystem.Contract.csproj">
+    <ProjectReference Include="..\..\Contracts\RegistrationSystem.Contract\RegistrationSystem.Contract.csproj">
       <Project>{11091d05-c3f3-483b-a416-302565b31dad}</Project>
       <Name>RegistrationSystem.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Contracts\Resources.Contract\Resources.Contract.csproj">
+      <Project>{4873f341-2cc7-4a6a-8d64-75506ba6a67f}</Project>
+      <Name>Resources.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Contracts\Scheduler.Contract\Scheduler.Contract.csproj">
+      <Project>{ae02272b-a678-4470-87ae-495650534fd5}</Project>
+      <Name>Scheduler.Contract</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\RegistrationSystem.DI\RegistrationSystem.DI.csproj">
       <Project>{4bd00a7a-ad30-42ca-a763-e96cfa192b2e}</Project>
       <Name>RegistrationSystem.DI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Resources.Contract\Resources.Contract.csproj">
-      <Project>{4873f341-2cc7-4a6a-8d64-75506ba6a67f}</Project>
-      <Name>Resources.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Scheduler.Contract\Scheduler.Contract.csproj">
-      <Project>{ae02272b-a678-4470-87ae-495650534fd5}</Project>
-      <Name>Scheduler.Contract</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

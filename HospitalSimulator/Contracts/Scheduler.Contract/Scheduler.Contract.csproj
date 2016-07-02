@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{11091D05-C3F3-483B-A416-302565B31DAD}</ProjectGuid>
+    <ProjectGuid>{AE02272B-A678-4470-87AE-495650534FD5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RegistrationSystem.Contract</RootNamespace>
-    <AssemblyName>RegistrationSystem.Contract</AssemblyName>
+    <RootNamespace>Scheduler.Contract</RootNamespace>
+    <AssemblyName>Scheduler.Contract</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,13 +34,17 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IConsultationBooker.cs" />
+    <Compile Include="IResourceCalendar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Consultations.Contract\Consultations.Contract.csproj">
       <Project>{8aa49ed2-ced3-4082-8d9e-a2cbb789c582}</Project>
       <Name>Consultations.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Resources.Contract\Resources.Contract.csproj">
+      <Project>{4873f341-2cc7-4a6a-8d64-75506ba6a67f}</Project>
+      <Name>Resources.Contract</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
