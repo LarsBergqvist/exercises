@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Policy;
-using RegistrationSystem.Contract;
+using Consultations.Contract;
 
 namespace RegistrationSystem.Fakes
 {

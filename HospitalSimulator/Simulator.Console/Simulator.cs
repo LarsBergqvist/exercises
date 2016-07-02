@@ -1,6 +1,6 @@
 ﻿using System;
 using RegistrationSystem.Contract;
-using RegistrationSystem.Contract.Resources;
+using Resources.Contract;
 
 namespace Simulator.Console
 {
@@ -28,10 +28,8 @@ namespace Simulator.Console
             ResourcesFileReader.AddDoctorsFromFile("doctors.json",_resourcesRepository);
             ResourcesFileReader.AddRoomsFromFile("rooms.json",_resourcesRepository);
 
-            var resourceCalendar = factory.ResourceCalendar;
-            resourceCalendar.Generate(calenderStartDate, calenderStartDate.AddDays(calenderSize));
-
             _consultationBooker = factory.ConsultationBooker;
+            _consultationBooker.Init(calenderStartDate, calenderSize);
         }
 
         private void MenuLoop()

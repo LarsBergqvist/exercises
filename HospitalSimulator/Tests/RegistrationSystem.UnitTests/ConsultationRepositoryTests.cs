@@ -1,6 +1,6 @@
 ﻿using System.Linq;
+using Consultations.Contract;
 using NUnit.Framework;
-using RegistrationSystem.Contract;
 using RegistrationSystem.DI;
 
 namespace RegistrationSystem.UnitTests

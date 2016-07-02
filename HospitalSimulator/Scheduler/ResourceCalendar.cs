@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using RegistrationSystem.Contract;
-using RegistrationSystem.Contract.Resources;
+using Consultations.Contract;
+using Resources.Contract;
+using Scheduler.Contract;
 
-namespace RegistrationSystem
+namespace Scheduler
 {
     public class CalenderDay
     {
@@ -28,10 +29,10 @@ namespace RegistrationSystem
             _consultationsRepository = consultationsRepository;
         }
 
-        public void Generate(DateTime fromDate, DateTime toDate)
+        public void Generate(DateTime fromDate, int sizeInDays)
         {
-            _startDate = fromDate; 
-            _numberOfDays = (toDate.Date - fromDate.Date).Days;
+            _startDate = fromDate;
+            _numberOfDays = sizeInDays;
 
             _dateToIndexMap = CreateDateToIndexMap(fromDate, _numberOfDays);
 
@@ -147,6 +148,35 @@ namespace RegistrationSystem
             return numSchedulations;
         }
 
+        public void RemoveConsultationFromCalendars(string id)
+        {
+            foreach (var doctorNameCalendar in _doctorsCalendars)
+            {
+                var doctorCalendar = doctorNameCalendar.Value;
+                for (var i = 0; i < doctorCalendar.Length; i++)
+                {
+                    if (doctorCalendar[i] == null) continue;
+                    if (doctorCalendar[i].BookedConsultation.Id == id)
+                    {
+                        doctorCalendar[i] = null;
+                    }
+                }
+            }
+
+            foreach (var roomNameCalendar in _roomsCalendars)
+            {
+                var roomCalendar = roomNameCalendar.Value;
+                for (var i = 0; i < roomCalendar.Length; i++)
+                {
+                    if (roomCalendar[i] == null) continue;
+                    if (roomCalendar[i].BookedConsultation.Id == id)
+                    {
+                        roomCalendar[i] = null;
+                    }
+                }
+            }
+        }
+
         public void Clear()
         {
             if (_doctorsCalendars != null)
@@ -187,7 +217,7 @@ namespace RegistrationSystem
             var room = resourcesRepository.GetRoomByName(roomName);
             if (room == null) return false;
 
-            if (!room.IsSuitableForConditionTreatment(condition)) return false;
+            if (!RoomConditionMap.IsSuitableForConditionTreatment(room.TreatmentMachine,condition)) return false;
 
             if (roomCal == null) return false;
 

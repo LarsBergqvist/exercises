@@ -1,5 +1,7 @@
-﻿using RegistrationSystem.Contract;
-using RegistrationSystem.Contract.Resources;
+﻿using Consultations.Contract;
+using RegistrationSystem.Contract;
+using Resources.Contract;
+using Scheduler.Contract;
 
 namespace RegistrationSystem.DI
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Consultations.Contract;
 
 namespace RegistrationSystem.Contract
 {
@@ -45,5 +46,7 @@ namespace RegistrationSystem.Contract
         /// <param name="id">The id of the consultation record in the system</param>
         /// <returns></returns>
         void RemoveScheduledConsultation(string id);
+
+        void Init(DateTime calenderStartDate, int sizeInDays);
     }
 }

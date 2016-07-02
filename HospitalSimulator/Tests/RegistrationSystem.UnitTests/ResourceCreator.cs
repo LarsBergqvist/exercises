@@ -1,5 +1,4 @@
-﻿using RegistrationSystem.Contract;
-using RegistrationSystem.Contract.Resources;
+﻿using Resources.Contract;
 
 namespace RegistrationSystem.UnitTests
 {

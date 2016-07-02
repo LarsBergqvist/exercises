@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using Consultations.Contract;
+using Resources.Contract;
 
-namespace RegistrationSystem.Contract
+namespace Scheduler
 {
-    public class DoctorRoles
+    public class DoctorRoleConditionMap
     {
         private readonly Dictionary<ConditionType, RoleType> _conditionToRoleMap;
 
-        public DoctorRoles()
+        public DoctorRoleConditionMap()
         {
             _conditionToRoleMap = new Dictionary<ConditionType, RoleType>
             {

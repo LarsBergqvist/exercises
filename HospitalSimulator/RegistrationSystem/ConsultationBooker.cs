@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Consultations.Contract;
 using RegistrationSystem.Contract;
+using Scheduler.Contract;
 
 namespace RegistrationSystem
 {
@@ -49,8 +51,6 @@ namespace RegistrationSystem
 
                 return result;
             }
-
-            return null;
         }
 
         public ICollection<PatientRecord> GetAllRegisteredPatients()
@@ -66,6 +66,12 @@ namespace RegistrationSystem
         public void RemoveScheduledConsultation(string id)
         {
             _consultationsRepository.RemoveConsultation(id);
+            _resourceCalendar.RemoveConsultationFromCalendars(id);
+        }
+
+        public void Init(DateTime calenderStartDate, int sizeInDays)
+        {
+            _resourceCalendar.Generate(calenderStartDate, sizeInDays);
         }
     }
 

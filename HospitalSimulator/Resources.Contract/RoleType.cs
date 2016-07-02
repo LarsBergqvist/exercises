@@ -1,4 +1,4 @@
-﻿namespace RegistrationSystem.Contract
+﻿namespace Resources.Contract
 {
     public enum RoleType
     {

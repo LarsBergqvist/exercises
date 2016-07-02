@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using RegistrationSystem.Contract;
+using Consultations.Contract;
+using Resources.Contract;
 
-namespace RegistrationSystem
+namespace RegistrationSystem.Scheduler
 {
     public class DoctorRoleConditionMap
     {

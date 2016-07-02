@@ -1,8 +1,9 @@
 ﻿using System;
+using Consultations.Contract;
 using NUnit.Framework;
-using RegistrationSystem.Contract;
-using RegistrationSystem.Contract.Resources;
 using RegistrationSystem.DI;
+using Resources.Contract;
+using Scheduler.Contract;
 
 namespace RegistrationSystem.UnitTests
 {
@@ -41,7 +42,7 @@ namespace RegistrationSystem.UnitTests
             _resourceCreator.SetupResourcesSet1(_resourceRepository);
 
             var startDate = DateTime.Now.Date;
-            _resourceCalendar.Generate(startDate, startDate.AddDays(365));
+            _resourceCalendar.Generate(startDate, 365);
 
             var tomorrow = DateTime.Now.Date.AddDays(1);
 
@@ -80,7 +81,7 @@ namespace RegistrationSystem.UnitTests
             _resourceCreator.SetupResourcesSet2(_resourceRepository);
 
             var startDate = DateTime.Now.Date;
-            _resourceCalendar.Generate(startDate, startDate.AddDays(365));
+            _resourceCalendar.Generate(startDate, 365);
 
             var tomorrow = DateTime.Now.Date.AddDays(1);
 
@@ -110,7 +111,7 @@ namespace RegistrationSystem.UnitTests
 
             var startDate = DateTime.Now.Date;
             const int calenderSize = 365;
-            _resourceCalendar.Generate(startDate, startDate.AddDays(calenderSize));
+            _resourceCalendar.Generate(startDate, calenderSize);
 
             var tomorrow = DateTime.Now.Date.AddDays(1);
 
@@ -133,7 +134,7 @@ namespace RegistrationSystem.UnitTests
         {
             _resourceCreator.SetupResourcesSet1(_resourceRepository);
             var startDate = DateTime.Now.Date;
-            _resourceCalendar.Generate(startDate, startDate.AddDays(7));
+            _resourceCalendar.Generate(startDate, 7);
 
             Assert.Throws<ResourceCalendarException>(
                 () => _resourceCalendar.ScheduleFirstAvailable("Knut", _today, ConditionType.CancerHeadNeck, DateTime.Now.Date.AddDays(8))
@@ -145,7 +146,7 @@ namespace RegistrationSystem.UnitTests
         {
             _resourceCreator.SetupResourcesSet1(_resourceRepository);
             var startDate = DateTime.Now.Date;
-            _resourceCalendar.Generate(startDate, startDate.AddDays(7));
+            _resourceCalendar.Generate(startDate, 7);
 
             var consultation =_resourceCalendar.ScheduleFirstAvailable("Knut", _today, ConditionType.CancerHeadNeck,
                 _today.AddDays(3));
@@ -166,7 +167,7 @@ namespace RegistrationSystem.UnitTests
             //
             // Start with an empty calendar and schedule two consultations
             //
-            _resourceCalendar.Generate(startDate, startDate.AddDays(365));
+            _resourceCalendar.Generate(startDate, 365);
             var consultation1 = _resourceCalendar.ScheduleFirstAvailable("Knut1", _today, ConditionType.CancerHeadNeck,tomorrow);
             var consultation2 = _resourceCalendar.ScheduleFirstAvailable("Knut2", _today, ConditionType.CancerHeadNeck,tomorrow);
             Assert.IsTrue(_resourceCalendar.NumDoctorSchedulations() == 2);
@@ -179,7 +180,7 @@ namespace RegistrationSystem.UnitTests
             _resourceCalendar.Clear();
             Assert.IsTrue(_resourceCalendar.NumDoctorSchedulations() == 0);
             Assert.IsTrue(_resourceCalendar.NumRoomSchedulations() == 0);
-            _resourceCalendar.Generate(startDate, startDate.AddDays(365));
+            _resourceCalendar.Generate(startDate, 365);
             Assert.IsTrue(_resourceCalendar.NumDoctorSchedulations() == 2);
             Assert.IsTrue(_resourceCalendar.NumRoomSchedulations() == 2);
 

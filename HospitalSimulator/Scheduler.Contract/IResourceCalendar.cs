@@ -1,6 +1,7 @@
 ﻿using System;
+using Consultations.Contract;
 
-namespace RegistrationSystem.Contract
+namespace Scheduler.Contract
 {
     public class ResourceCalendarException : Exception
     {
@@ -16,9 +17,9 @@ namespace RegistrationSystem.Contract
         /// Generates or regenerates a new a new calendar with a specified size
         /// </summary>
         /// <param name="fromDate">The first date in the calendar</param>
-        /// <param name="toDate">The last date in the calendar</param>
+        /// <param name="sizeInDays">The size of the calendar in days</param>
         /// <returns></returns>
-        void Generate(DateTime fromDate, DateTime toDate);
+        void Generate(DateTime fromDate, int sizeInDays);
 
         /// <summary>
         /// Schedules the first available consultation date with resources based on the specified condition
@@ -43,6 +44,12 @@ namespace RegistrationSystem.Contract
         /// </summary>
         /// <returns>The number of room schedulations</returns>
         int NumRoomSchedulations();
+
+        /// <summary>
+        /// Removes a registred consultation from the calendar
+        /// </summary>
+        /// <returns></returns>
+        void RemoveConsultationFromCalendars(string id);
 
         void Clear();
     }

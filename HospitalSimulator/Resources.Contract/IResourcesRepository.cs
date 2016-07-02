@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using RegistrationSystem.Contract.Resources;
 
-namespace RegistrationSystem.Contract
+namespace Resources.Contract
 {
     public class ResourcesRepositoryException : Exception
     {

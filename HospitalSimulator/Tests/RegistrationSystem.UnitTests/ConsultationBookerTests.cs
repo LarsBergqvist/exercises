@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+using Consultations.Contract;
 using NUnit.Framework;
 using RegistrationSystem.Contract;
-using RegistrationSystem.Contract.Resources;
 using RegistrationSystem.DI;
+using Resources.Contract;
+using Scheduler.Contract;
 
 namespace RegistrationSystem.UnitTests
 {
@@ -37,7 +39,7 @@ namespace RegistrationSystem.UnitTests
         public void Test_EarliestConsultationDateIsTomorrow()
         {
             var today = DateTime.Now.Date;
-            _resourceCalendar.Generate(today, today.AddDays(365));
+            _resourceCalendar.Generate(today, 365);
 
             var request = new ConsultationRequest()
             {
@@ -115,7 +117,7 @@ namespace RegistrationSystem.UnitTests
             testDataGenerator.SetupResourcesSet3(_resourcesRepository);
 
             var today = DateTime.Now.Date;
-            _resourceCalendar.Generate(today, today.AddDays(365));
+            _resourceCalendar.Generate(today, 365);
 
             var request = new ConsultationRequest()
             {
@@ -134,7 +136,7 @@ namespace RegistrationSystem.UnitTests
         public void Test_RemovedScheduledConsultation()
         {
             var today = DateTime.Now.Date;
-            _resourceCalendar.Generate(today, today.AddDays(365));
+            _resourceCalendar.Generate(today, 365);
 
             var request = new ConsultationRequest()
             {
@@ -147,10 +149,14 @@ namespace RegistrationSystem.UnitTests
             Assert.IsTrue(result.Successful);
 
             Assert.IsTrue(_consultationBooker.GetAllScheduledConsultations(today).Count == 1);
+            Assert.IsTrue(_resourceCalendar.NumDoctorSchedulations() == 1);
+            Assert.IsTrue(_resourceCalendar.NumRoomSchedulations() == 1);
 
             _consultationBooker.RemoveScheduledConsultation(result.BookedConsultation.Id);
 
             Assert.IsTrue(_consultationBooker.GetAllScheduledConsultations(today).Count == 0);
+            Assert.IsTrue(_resourceCalendar.NumDoctorSchedulations() == 0);
+            Assert.IsTrue(_resourceCalendar.NumRoomSchedulations() == 0);
 
         }
 
@@ -158,7 +164,7 @@ namespace RegistrationSystem.UnitTests
         public void Test_EarliestDateOutsideCalendar()
         {
             var today = DateTime.Now.Date;
-            _resourceCalendar.Generate(today.AddDays(-7), today);
+            _resourceCalendar.Generate(today.AddDays(-7), 7);
 
             var request = new ConsultationRequest()
             {
@@ -177,7 +183,7 @@ namespace RegistrationSystem.UnitTests
         private void RequestTwoCancerConsultations()
         {
             var today = DateTime.Now.Date;
-            _resourceCalendar.Generate(today, today.AddDays(365));
+            _resourceCalendar.Generate(today, 365);
 
             var request1 = new ConsultationRequest()
             {

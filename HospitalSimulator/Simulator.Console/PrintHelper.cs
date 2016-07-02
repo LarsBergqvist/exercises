@@ -1,6 +1,7 @@
 ﻿using System;
+using Consultations.Contract;
 using RegistrationSystem.Contract;
-using RegistrationSystem.Contract.Resources;
+using Resources.Contract;
 
 namespace Simulator.Console
 {
@@ -23,7 +24,7 @@ namespace Simulator.Console
             else
             {
                 System.Console.WriteLine("Successfully booked a consultation:");
-                System.Console.WriteLine("Patient name: {0}, (condition={1})", result.BookedConsultation.PatientName, result.BookedConsultation.ConditionType);
+                System.Console.WriteLine("Patient name: {0}", result.BookedConsultation.PatientName);
                 PrintConsultation(result.BookedConsultation);
             }
         }
@@ -101,7 +102,7 @@ namespace Simulator.Console
             foreach (var consultation in consultations)
             {
                 PrintDivider();
-                System.Console.WriteLine("Patient name: {0}, (condition={1})", consultation.PatientName, consultation.ConditionType);
+                System.Console.WriteLine("Patient name: {0}", consultation.PatientName);
                 PrintConsultation(consultation);
             }
         }

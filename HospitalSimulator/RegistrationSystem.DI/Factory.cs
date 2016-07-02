@@ -1,7 +1,10 @@
-﻿using Ninject;
+﻿using Consultations.Contract;
+using Ninject;
 using RegistrationSystem.Contract;
-using RegistrationSystem.Contract.Resources;
 using RegistrationSystem.Fakes;
+using Resources.Contract;
+using Scheduler;
+using Scheduler.Contract;
 
 namespace RegistrationSystem.DI
 {
