@@ -39,7 +39,7 @@ namespace RegistrationSystem.UnitTests
         public void Test_EarliestConsultationDateIsTomorrow()
         {
             var today = DateTime.Now.Date;
-            _resourceCalendar.Generate(today, 365);
+            _consultationBooker.Init(today, 365);
 
             var request = new ConsultationRequest()
             {
@@ -117,7 +117,7 @@ namespace RegistrationSystem.UnitTests
             testDataGenerator.SetupResourcesSet3(_resourcesRepository);
 
             var today = DateTime.Now.Date;
-            _resourceCalendar.Generate(today, 365);
+            _consultationBooker.Init(today, 365);
 
             var request = new ConsultationRequest()
             {
@@ -136,7 +136,7 @@ namespace RegistrationSystem.UnitTests
         public void Test_RemovedScheduledConsultation()
         {
             var today = DateTime.Now.Date;
-            _resourceCalendar.Generate(today, 365);
+            _consultationBooker.Init(today,365);
 
             var request = new ConsultationRequest()
             {
@@ -164,7 +164,7 @@ namespace RegistrationSystem.UnitTests
         public void Test_EarliestDateOutsideCalendar()
         {
             var today = DateTime.Now.Date;
-            _resourceCalendar.Generate(today.AddDays(-7), 7);
+            _consultationBooker.Init(today.AddDays(-7), 7);
 
             var request = new ConsultationRequest()
             {
@@ -183,7 +183,7 @@ namespace RegistrationSystem.UnitTests
         private void RequestTwoCancerConsultations()
         {
             var today = DateTime.Now.Date;
-            _resourceCalendar.Generate(today, 365);
+            _consultationBooker.Init(today, 365);
 
             var request1 = new ConsultationRequest()
             {
@@ -213,6 +213,35 @@ namespace RegistrationSystem.UnitTests
             Assert.IsTrue(DoctorHasMatchingRole(result2.BookedConsultation.Doctor, RoleType.Oncologist));
             Assert.IsTrue((result1.BookedConsultation.Room.TreatmentMachine.Capability == MachineCapabilityType.Advanced) ||
                 (result1.BookedConsultation.Room.TreatmentMachine.Capability == MachineCapabilityType.Simple));
+        }
+
+        [Test]
+        public void Test_InitWhenExistingConsultationsAreLaterThanBoundsOfSystem()
+        {
+            var today = DateTime.Now.Date;          
+            var tomorrow = DateTime.Now.Date.AddDays(1);
+            var consultationsRepository = _factory.ConsultationsRepository;
+
+            //
+            // Fill consultations repository with bookings that fills up tomorrow + 1
+            //
+            _consultationBooker.Init(today, 3);
+            var request1 = new ConsultationRequest()
+            {
+                Condition = ConditionType.CancerHeadNeck,
+                PatientName = "Pelle",
+                RegistrationDate = today
+            };
+            _consultationBooker.RequestFirstAvailableConsultation(request1);
+            _consultationBooker.RequestFirstAvailableConsultation(request1);
+            _consultationBooker.RequestFirstAvailableConsultation(request1);
+            _consultationBooker.RequestFirstAvailableConsultation(request1);
+            Assert.IsTrue(consultationsRepository.GetAllConsultations().Count == 4);
+
+            // Re-init the system/calendar with a smaller size
+            // The persisted consultations and the resources should recreate the calendar
+            // but the last consultation will not fit
+            Assert.Throws<ResourceCalendarException>(() => _consultationBooker.Init(today, 2));
         }
 
         private bool DoctorHasMatchingRole(Doctor doctor, RoleType roleToMatch)

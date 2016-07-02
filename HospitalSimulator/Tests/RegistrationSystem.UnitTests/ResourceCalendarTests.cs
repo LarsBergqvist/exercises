@@ -186,5 +186,32 @@ namespace RegistrationSystem.UnitTests
 
         }
 
+        [Test]
+        public void Test_CalendarCreationWhenExistingConsultationsAreLaterThanBoundsOfCalendar()
+        {
+            _resourceCreator.SetupResourcesSet1(_resourceRepository);
+
+            var startDate = DateTime.Now.Date;
+
+            var tomorrow = DateTime.Now.Date.AddDays(1);
+
+            //
+            // Fill consultations repository with bookings that fills up tomorrow + 1
+            //
+            _resourceCalendar.Generate(startDate, 3);
+            _resourceCalendar.ScheduleFirstAvailable("Knut1", _today, ConditionType.CancerHeadNeck, tomorrow);
+            _resourceCalendar.ScheduleFirstAvailable("Knut2", _today, ConditionType.CancerHeadNeck, tomorrow);
+            _resourceCalendar.ScheduleFirstAvailable("Knut1", _today, ConditionType.CancerHeadNeck, tomorrow);
+            _resourceCalendar.ScheduleFirstAvailable("Knut2", _today, ConditionType.CancerHeadNeck, tomorrow);
+            Assert.IsTrue(_consultationsRepository.GetAllConsultations().Count == 4);
+
+            //
+            // Regenerate the calendar with a smaller size
+            // The persisted consultations and the resources should recreate the calendar
+            // but the last consultation will not fit
+            Assert.Throws<ResourceCalendarException>(() => _resourceCalendar.Generate(startDate, 2));
+        }
+
+
     }
 }

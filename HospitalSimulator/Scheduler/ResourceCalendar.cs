@@ -263,6 +263,12 @@ namespace Scheduler
                         roomsCalendars[roomName][dayIndex] = new CalenderDay() { BookedConsultation = consultation };
                     }
                 }
+                else
+                {
+                    // Consultation date from the repository is out of bounds for the calendar
+                    throw new ResourceCalendarException(string.Format("The calendar date {0} in the consultations repository is out of bounds for this calendar. " +
+                                                                      "You need to initialize the calendar with a larger size.", date.ToString("yyyy-MM-dd")));
+                }
             }
         }
 
