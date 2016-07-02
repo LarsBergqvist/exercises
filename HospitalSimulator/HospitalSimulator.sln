@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationSystem", "Regis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationSystem.DI", "RegistrationSystem.DI\RegistrationSystem.DI.csproj", "{4BD00A7A-AD30-42CA-A763-E96CFA192B2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalSimulator", "HospitalSimulator\HospitalSimulator.csproj", "{B29EBBB1-BE74-491F-B77B-C2F986B95550}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator.Console", "Simulator.Console\Simulator.Console.csproj", "{B29EBBB1-BE74-491F-B77B-C2F986B95550}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
