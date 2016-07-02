@@ -69,7 +69,7 @@ namespace Simulator.Console
         {
             System.Console.Write("Enter id of scheduled consultation to remove: ");
             var id = System.Console.ReadLine();
-            _consultationBooker.RemovedScheduledConsultation(id);
+            _consultationBooker.RemoveScheduledConsultation(id);
         }
 
         private void SelectAndProcessRequestFile()

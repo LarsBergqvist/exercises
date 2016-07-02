@@ -46,6 +46,7 @@
     <Compile Include="PatientRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\TreatmentRoom.cs" />
+    <Compile Include="RoleType.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

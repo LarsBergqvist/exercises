@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using RegistrationSystem.Contract;
 
-namespace RegistrationSystem.Contract
+namespace RegistrationSystem
 {
     public class DoctorRoles
     {

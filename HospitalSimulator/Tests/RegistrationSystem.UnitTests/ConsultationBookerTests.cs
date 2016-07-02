@@ -46,7 +46,7 @@ namespace RegistrationSystem.UnitTests
             };
             var result = _consultationBooker.RequestFirstAvailableConsultation(request);
 
-            Assert.IsTrue(result.Succesful);
+            Assert.IsTrue(result.Successful);
             Assert.IsTrue(result.BookedConsultation.ConsultationDate == today.AddDays(1));
             Assert.IsTrue(result.BookedConsultation.RegistrationDate == today);
             Assert.IsTrue(DoctorHasMatchingRole(result.BookedConsultation.Doctor, RoleType.GeneralPractioner));
@@ -77,7 +77,7 @@ namespace RegistrationSystem.UnitTests
             };
             var result3 = _consultationBooker.RequestFirstAvailableConsultation(request3);
 
-            Assert.IsTrue(result3.Succesful);
+            Assert.IsTrue(result3.Successful);
             Assert.IsTrue(result3.BookedConsultation.ConsultationDate == today.AddDays(2));
             Assert.IsTrue(DoctorHasMatchingRole(result3.BookedConsultation.Doctor, RoleType.Oncologist));
             Assert.IsTrue(result3.BookedConsultation.Room.TreatmentMachine.Capability == MachineCapabilityType.Advanced);
@@ -118,7 +118,7 @@ namespace RegistrationSystem.UnitTests
             };
             var result1 = _consultationBooker.RequestFirstAvailableConsultation(request1);
 
-            Assert.IsTrue(result1.Succesful);
+            Assert.IsTrue(result1.Successful);
             Assert.IsTrue(result1.BookedConsultation.ConsultationDate == today.AddDays(1));
             Assert.IsTrue(result1.BookedConsultation.RegistrationDate == today);
             Assert.IsTrue(DoctorHasMatchingRole(result1.BookedConsultation.Doctor, RoleType.Oncologist));
@@ -132,7 +132,7 @@ namespace RegistrationSystem.UnitTests
             };
             var result2 = _consultationBooker.RequestFirstAvailableConsultation(request2);
 
-            Assert.IsTrue(result2.Succesful);
+            Assert.IsTrue(result2.Successful);
             Assert.IsTrue(result2.BookedConsultation.ConsultationDate == today.AddDays(1));
             Assert.IsTrue(result2.BookedConsultation.RegistrationDate == today);
             Assert.IsTrue(DoctorHasMatchingRole(result2.BookedConsultation.Doctor, RoleType.Oncologist));

@@ -109,7 +109,7 @@ namespace RegistrationSystem
             return null;
         }
 
-        public int NumberOfSchedulationsOfDoctors()
+        public int NumDoctorSchedulations()
         {
             if (!_isInitated)
                 throw new ResourceCalendarException("The ResourceCalendar is not initated.");
@@ -128,7 +128,7 @@ namespace RegistrationSystem
             return numSchedulations;
         }
 
-        public int NumberOfSchedulationsOfRooms()
+        public int NumRoomSchedulations()
         {
             if (!_isInitated)
                 throw new ResourceCalendarException("The ResourceCalendar is not initated.");

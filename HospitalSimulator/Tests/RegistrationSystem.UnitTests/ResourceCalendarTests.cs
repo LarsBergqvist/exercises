@@ -10,7 +10,7 @@ namespace RegistrationSystem.UnitTests
     public class ResourceCalendarTests
     {
         private IResourcesRepository _resourceRepository;
-        private ResourceCreator _testDataGenerator;
+        private ResourceCreator _resourceCreator;
         private IResourceCalendar _resourceCalendar;
         private IConsultationsRepository _consultationsRepository;
         private DateTime _today;
@@ -20,7 +20,7 @@ namespace RegistrationSystem.UnitTests
         public void TestFixtureSetUp()
         {
             _factory.BindDependencies();
-            _testDataGenerator = new ResourceCreator();
+            _resourceCreator = new ResourceCreator();
             _resourceRepository = _factory.ResourcesRepository;
             _resourceCalendar = _factory.ResourceCalendar;
             _consultationsRepository = _factory.ConsultationsRepository;
@@ -38,7 +38,7 @@ namespace RegistrationSystem.UnitTests
         [Test]
         public void Test_BookFirstAvailableDate_busy_doctors_and_rooms()
         {
-            _testDataGenerator.SetupResourcesSet1(_resourceRepository);
+            _resourceCreator.SetupResourcesSet1(_resourceRepository);
 
             var startDate = DateTime.Now.Date;
             _resourceCalendar.Generate(startDate, startDate.AddDays(365));
@@ -49,16 +49,16 @@ namespace RegistrationSystem.UnitTests
             Assert.IsNotNull(consultation1);
             Assert.IsTrue(consultation1.ConsultationDate == tomorrow);
             Assert.IsTrue(_consultationsRepository.GetAllConsultations().Count == 1);
-            Assert.IsTrue(_resourceCalendar.NumberOfSchedulationsOfDoctors() == 1);
-            Assert.IsTrue(_resourceCalendar.NumberOfSchedulationsOfRooms() == 1);
+            Assert.IsTrue(_resourceCalendar.NumDoctorSchedulations() == 1);
+            Assert.IsTrue(_resourceCalendar.NumRoomSchedulations() == 1);
 
             var consultation2 = _resourceCalendar.ScheduleFirstAvailable("Knut2", _today, ConditionType.CancerHeadNeck, tomorrow);
             Assert.IsNotNull(consultation2);
             Assert.IsTrue(consultation2.ConsultationDate == tomorrow);
             Assert.IsFalse(consultation1.Doctor.Name == consultation2.Doctor.Name);
             Assert.IsTrue(_consultationsRepository.GetAllConsultations().Count == 2);
-            Assert.IsTrue(_resourceCalendar.NumberOfSchedulationsOfDoctors() == 2);
-            Assert.IsTrue(_resourceCalendar.NumberOfSchedulationsOfRooms() == 2);
+            Assert.IsTrue(_resourceCalendar.NumDoctorSchedulations() == 2);
+            Assert.IsTrue(_resourceCalendar.NumRoomSchedulations() == 2);
 
             // There are only 2 oncologists and 2 advanced cancer treatment rooms in the test set
             // Thus, we can only book two advanced cancer treatments per day
@@ -66,8 +66,8 @@ namespace RegistrationSystem.UnitTests
             Assert.IsNotNull(consultation3);
             Assert.IsTrue(consultation3.ConsultationDate == tomorrow.AddDays(1));
             Assert.IsTrue(_consultationsRepository.GetAllConsultations().Count == 3);
-            Assert.IsTrue(_resourceCalendar.NumberOfSchedulationsOfDoctors() == 3);
-            Assert.IsTrue(_resourceCalendar.NumberOfSchedulationsOfRooms() == 3);
+            Assert.IsTrue(_resourceCalendar.NumDoctorSchedulations() == 3);
+            Assert.IsTrue(_resourceCalendar.NumRoomSchedulations() == 3);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace RegistrationSystem.UnitTests
             // Use a resource set where there are 3 extra general practioner doctors (5 in total)
             // and 5 rooms
             //
-            _testDataGenerator.SetupResourcesSet2(_resourceRepository);
+            _resourceCreator.SetupResourcesSet2(_resourceRepository);
 
             var startDate = DateTime.Now.Date;
             _resourceCalendar.Generate(startDate, startDate.AddDays(365));
@@ -106,7 +106,7 @@ namespace RegistrationSystem.UnitTests
         [Test]
         public void Test_BookFirstAvailableDate_calender_too_small()
         {
-            _testDataGenerator.SetupResourcesSet1(_resourceRepository);
+            _resourceCreator.SetupResourcesSet1(_resourceRepository);
 
             var startDate = DateTime.Now.Date;
             const int calenderSize = 365;
@@ -131,7 +131,7 @@ namespace RegistrationSystem.UnitTests
         [Test]
         public void Test_BookEarliestDateOutsideCalendar()
         {
-            _testDataGenerator.SetupResourcesSet1(_resourceRepository);
+            _resourceCreator.SetupResourcesSet1(_resourceRepository);
             var startDate = DateTime.Now.Date;
             _resourceCalendar.Generate(startDate, startDate.AddDays(7));
 
@@ -141,9 +141,23 @@ namespace RegistrationSystem.UnitTests
         }
 
         [Test]
+        public void Test_BookEarliestDateSuccessful()
+        {
+            _resourceCreator.SetupResourcesSet1(_resourceRepository);
+            var startDate = DateTime.Now.Date;
+            _resourceCalendar.Generate(startDate, startDate.AddDays(7));
+
+            var consultation =_resourceCalendar.ScheduleFirstAvailable("Knut", _today, ConditionType.CancerHeadNeck,
+                _today.AddDays(3));
+
+            Assert.IsTrue(consultation.ConsultationDate == _today.AddDays(3));
+
+        }
+
+        [Test]
         public void Test_CalendarCanBeRegeneratedFromConsultationsRepository()
         {
-            _testDataGenerator.SetupResourcesSet1(_resourceRepository);
+            _resourceCreator.SetupResourcesSet1(_resourceRepository);
 
             var startDate = DateTime.Now.Date;
 
@@ -155,19 +169,19 @@ namespace RegistrationSystem.UnitTests
             _resourceCalendar.Generate(startDate, startDate.AddDays(365));
             var consultation1 = _resourceCalendar.ScheduleFirstAvailable("Knut1", _today, ConditionType.CancerHeadNeck,tomorrow);
             var consultation2 = _resourceCalendar.ScheduleFirstAvailable("Knut2", _today, ConditionType.CancerHeadNeck,tomorrow);
-            Assert.IsTrue(_resourceCalendar.NumberOfSchedulationsOfDoctors() == 2);
-            Assert.IsTrue(_resourceCalendar.NumberOfSchedulationsOfRooms() == 2);
+            Assert.IsTrue(_resourceCalendar.NumDoctorSchedulations() == 2);
+            Assert.IsTrue(_resourceCalendar.NumRoomSchedulations() == 2);
 
             //
             // Clear the calendar and regenerate it
             // The persisted consultations and the resources should recreate the calendar
             //
             _resourceCalendar.Clear();
-            Assert.IsTrue(_resourceCalendar.NumberOfSchedulationsOfDoctors() == 0);
-            Assert.IsTrue(_resourceCalendar.NumberOfSchedulationsOfRooms() == 0);
+            Assert.IsTrue(_resourceCalendar.NumDoctorSchedulations() == 0);
+            Assert.IsTrue(_resourceCalendar.NumRoomSchedulations() == 0);
             _resourceCalendar.Generate(startDate, startDate.AddDays(365));
-            Assert.IsTrue(_resourceCalendar.NumberOfSchedulationsOfDoctors() == 2);
-            Assert.IsTrue(_resourceCalendar.NumberOfSchedulationsOfRooms() == 2);
+            Assert.IsTrue(_resourceCalendar.NumDoctorSchedulations() == 2);
+            Assert.IsTrue(_resourceCalendar.NumRoomSchedulations() == 2);
 
         }
 

@@ -22,18 +22,28 @@ namespace RegistrationSystem
             {
                 DateTime earliestDate = consultationRequest.RegistrationDate.Date.AddDays(1);
                 var consultation = _resourceCalendar.ScheduleFirstAvailable(consultationRequest.PatientName, consultationRequest.RegistrationDate, consultationRequest.Condition, earliestDate);
-                var result = new ConsultationRequestResult
+                if (consultation != null)
                 {
-                    Succesful = (consultation != null),
-                    BookedConsultation = consultation
-                };
-                return result;
+                    return new ConsultationRequestResult
+                    {
+                        Successful = true,
+                        BookedConsultation = consultation
+                    };                    
+                }
+                else
+                {
+                    return new ConsultationRequestResult
+                    {
+                        Successful = false,
+                        ErrorMessage = "Could not find resources in the calendar for the consultation request."
+                    };                                        
+                }
             }
             catch (ResourceCalendarException calendarException)
             {
                 var result = new ConsultationRequestResult()
                 {
-                    Succesful = false,
+                    Successful = false,
                     ErrorMessage = calendarException.Message
                 };
 
@@ -53,7 +63,7 @@ namespace RegistrationSystem
             return _consultationsRepository.GetAllConsultations().Where(x => x.ConsultationDate >= fromDate).ToList();
         }
 
-        public void RemovedScheduledConsultation(string id)
+        public void RemoveScheduledConsultation(string id)
         {
             _consultationsRepository.RemoveConsultation(id);
         }

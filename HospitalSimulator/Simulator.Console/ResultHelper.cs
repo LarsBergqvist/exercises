@@ -16,7 +16,7 @@ namespace Simulator.Console
         public void PrintRequestResult(ConsultationRequestResult result)
         {
             PrintDivider();
-            if (result.Succesful == false)
+            if (result.Successful == false)
             {
                 System.Console.WriteLine("Could not book consultation. Error message: {0}", result.ErrorMessage);
             }
