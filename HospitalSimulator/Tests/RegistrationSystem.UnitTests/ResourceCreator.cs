@@ -20,6 +20,11 @@ namespace RegistrationSystem.UnitTests
             doctor3.Roles.Add(RoleType.GeneralPractioner);
             resourcesRepository.AddDoctor(doctor3);
 
+            SetupRoomsSet1(resourcesRepository);
+        }
+
+        private void SetupRoomsSet1(IResourcesRepository resourcesRepository)
+        {
             var elekta = new TreatmentMachine() { Name = "Elekta", Capability = MachineCapabilityType.Advanced };
             var varian = new TreatmentMachine() { Name = "Varian", Capability = MachineCapabilityType.Advanced };
             var mm50 = new TreatmentMachine() { Name = "MM50", Capability = MachineCapabilityType.Simple };
@@ -28,7 +33,7 @@ namespace RegistrationSystem.UnitTests
             resourcesRepository.AddRoom(new TreatmentRoom("Two") { TreatmentMachine = varian });
             resourcesRepository.AddRoom(new TreatmentRoom("Three") { TreatmentMachine = mm50 });
             resourcesRepository.AddRoom(new TreatmentRoom("Four"));
-            resourcesRepository.AddRoom(new TreatmentRoom("Five"));
+            resourcesRepository.AddRoom(new TreatmentRoom("Five"));            
         }
 
         public void SetupResourcesSet2(IResourcesRepository resourcesRepository)
@@ -46,6 +51,15 @@ namespace RegistrationSystem.UnitTests
             doctor6.Roles.Add(RoleType.GeneralPractioner);
             resourcesRepository.AddDoctor(doctor6);
         }
+
+        public void SetupResourcesSet3(IResourcesRepository resourcesRepository)
+        {
+            // No oncologists
+            var doctor1 = new Doctor("Julia");
+            doctor1.Roles.Add(RoleType.GeneralPractioner);
+            resourcesRepository.AddDoctor(doctor1);
+        }
+
 
     }
 }

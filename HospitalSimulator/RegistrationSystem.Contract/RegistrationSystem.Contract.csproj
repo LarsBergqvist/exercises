@@ -42,7 +42,7 @@
     <Compile Include="IConsultationBooker.cs" />
     <Compile Include="Resources\IHospitalResource.cs" />
     <Compile Include="IResourceCalendar.cs" />
-    <Compile Include="Resources\IResourcesRepository.cs" />
+    <Compile Include="IResourcesRepository.cs" />
     <Compile Include="PatientRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\TreatmentRoom.cs" />

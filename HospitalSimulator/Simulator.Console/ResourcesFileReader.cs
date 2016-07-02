@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using RegistrationSystem.Contract;
 using RegistrationSystem.Contract.Resources;
 
 namespace Simulator.Console

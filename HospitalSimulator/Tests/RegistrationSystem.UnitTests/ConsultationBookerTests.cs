@@ -12,6 +12,7 @@ namespace RegistrationSystem.UnitTests
     {
         private IConsultationBooker _consultationBooker;
         private IResourceCalendar _resourceCalendar;
+        private IResourcesRepository _resourcesRepository;
         private readonly Factory _factory = new Factory();
 
         [TestFixtureSetUp]
@@ -19,10 +20,7 @@ namespace RegistrationSystem.UnitTests
         {
             _factory.BindDependencies();
             _consultationBooker = _factory.ConsultationBooker;
-            var resourceRepository = _factory.ResourcesRepository;
-            resourceRepository.Clear();
-            var testDataGenerator = new ResourceCreator();
-            testDataGenerator.SetupResourcesSet1(resourceRepository);
+            _resourcesRepository = _factory.ResourcesRepository;
             _resourceCalendar = _factory.ResourceCalendar;
         }
 
@@ -30,6 +28,9 @@ namespace RegistrationSystem.UnitTests
         public void SetUp()
         {
             _factory.ConsultationsRepository.Clear();
+            _resourcesRepository.Clear();
+            var testDataGenerator = new ResourceCreator();
+            testDataGenerator.SetupResourcesSet1(_resourcesRepository);
         }
 
         [Test]
@@ -103,6 +104,74 @@ namespace RegistrationSystem.UnitTests
             Assert.IsTrue(_consultationBooker.GetAllScheduledConsultations(today.AddDays(1)).Count == 2);
             // No consultations the day after tomorrow
             Assert.IsTrue(_consultationBooker.GetAllScheduledConsultations(today.AddDays(2)).Count == 0);
+        }
+
+        [Test]
+        public void Test_NoFittingResourceAvailable()
+        {
+            // Use a resource pool without oncologists
+            _resourcesRepository.Clear();
+            var testDataGenerator = new ResourceCreator();
+            testDataGenerator.SetupResourcesSet3(_resourcesRepository);
+
+            var today = DateTime.Now.Date;
+            _resourceCalendar.Generate(today, today.AddDays(365));
+
+            var request = new ConsultationRequest()
+            {
+                Condition = ConditionType.CancerHeadNeck,
+                PatientName = "Pelle",
+                RegistrationDate = today
+            };
+            var result = _consultationBooker.RequestFirstAvailableConsultation(request);
+
+            Assert.IsFalse(result.Successful);
+            Assert.IsNull(result.BookedConsultation);
+            Assert.IsTrue(result.ErrorMessage.Length > 0);
+        }
+
+        [Test]
+        public void Test_RemovedScheduledConsultation()
+        {
+            var today = DateTime.Now.Date;
+            _resourceCalendar.Generate(today, today.AddDays(365));
+
+            var request = new ConsultationRequest()
+            {
+                Condition = ConditionType.Flu,
+                PatientName = "Pelle",
+                RegistrationDate = today
+            };
+            var result = _consultationBooker.RequestFirstAvailableConsultation(request);
+
+            Assert.IsTrue(result.Successful);
+
+            Assert.IsTrue(_consultationBooker.GetAllScheduledConsultations(today).Count == 1);
+
+            _consultationBooker.RemoveScheduledConsultation(result.BookedConsultation.Id);
+
+            Assert.IsTrue(_consultationBooker.GetAllScheduledConsultations(today).Count == 0);
+
+        }
+
+        [Test]
+        public void Test_EarliestDateOutsideCalendar()
+        {
+            var today = DateTime.Now.Date;
+            _resourceCalendar.Generate(today.AddDays(-7), today);
+
+            var request = new ConsultationRequest()
+            {
+                Condition = ConditionType.Flu,
+                PatientName = "Pelle",
+                RegistrationDate = today
+            };
+            var result = _consultationBooker.RequestFirstAvailableConsultation(request);
+
+            Assert.IsFalse(result.Successful);
+            Assert.IsNull(result.BookedConsultation);
+            Assert.IsTrue(result.ErrorMessage.Length > 0);
+
         }
 
         private void RequestTwoCancerConsultations()

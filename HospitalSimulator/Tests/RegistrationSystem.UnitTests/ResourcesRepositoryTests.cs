@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using RegistrationSystem.Contract;
 using RegistrationSystem.Contract.Resources;
 using RegistrationSystem.DI;
 
