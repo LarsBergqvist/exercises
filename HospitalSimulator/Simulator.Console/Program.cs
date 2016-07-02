@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 
-namespace HospitalSimulator
+namespace Simulator.Console
 {
     class Program
     {
@@ -10,7 +9,7 @@ namespace HospitalSimulator
             int calenderSize = 365;
             DateTime today = DateTime.Now.Date;
 
-            var sim = new Simulator();
+            var sim = new global::Simulator.Console.Simulator();
             sim.Init(today, calenderSize);
 
             if (args.Length == 1)

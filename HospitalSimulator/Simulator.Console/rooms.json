@@ -1,0 +1,29 @@
+[
+  {
+    "name": "One",
+    "treatmentMachine": {
+      "name": "Elekta",
+      "capability": "Advanced"
+    }
+  },
+  {
+    "name": "Two",
+    "treatmentMachine": {
+      "name": "Varian",
+      "capability": "Advanced"
+    }
+  },
+  {
+    "name": "Three",
+    "treatmentMachine": {
+      "name": "MM50",
+      "capability": "Simple"
+    }
+  },
+  {
+    "name": "Four"
+  },
+  {
+    "name": "Five"
+  }
+]

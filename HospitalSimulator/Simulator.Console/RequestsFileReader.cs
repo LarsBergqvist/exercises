@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using RegistrationSystem.Contract;
 
-namespace HospitalSimulator
+namespace Simulator.Console
 {
     public class Request
     {
@@ -41,7 +41,7 @@ namespace HospitalSimulator
                 }
                 else
                 {
-                    Console.WriteLine("Can not parse condition type {0} in file {1}", conditionAsString, file);
+                    System.Console.WriteLine("Can not parse condition type {0} in file {1}", conditionAsString, file);
                 }
             }
         }
@@ -74,7 +74,7 @@ namespace HospitalSimulator
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not process file '{0}'. {1}",filePath,e.Message);
+                System.Console.WriteLine("Could not process file '{0}'. {1}",filePath,e.Message);
             }
 
             return requests;

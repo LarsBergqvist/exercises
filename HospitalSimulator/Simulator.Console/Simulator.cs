@@ -2,7 +2,7 @@
 using RegistrationSystem.Contract;
 using RegistrationSystem.Contract.Resources;
 
-namespace HospitalSimulator
+namespace Simulator.Console
 {
     public class Simulator
     {
@@ -25,7 +25,8 @@ namespace HospitalSimulator
 
             _resourcesRepository = factory.ResourcesRepository;
 
-            ResourceCreator.AddSimulatedResources(_resourcesRepository);
+            ResourcesFileReader.AddDoctorsFromFile("doctors.json",_resourcesRepository);
+            ResourcesFileReader.AddRoomsFromFile("rooms.json",_resourcesRepository);
 
             var resourceCalendar = factory.ResourceCalendar;
             resourceCalendar.Generate(calenderStartDate, calenderStartDate.AddDays(calenderSize));
@@ -37,46 +38,44 @@ namespace HospitalSimulator
         {
             _resultHelper.PrintMenu();
 
-            var menuStr = Console.ReadLine();
+            var menuStr = System.Console.ReadLine();
             while (menuStr != "6")
             {
-                if (menuStr == "1")
+                switch (menuStr)
                 {
-                    _resultHelper.PrintAllBookedConsultations(_consultationBooker);
-                }
-                else if (menuStr == "2")
-                {
-                    _resultHelper.PrintAllRegisteredPatients(_consultationBooker);
-                }
-                else if (menuStr == "3")
-                {
-                    _resultHelper.PrintAvailableResources(_resourcesRepository);
-                }
-                else if (menuStr == "4")
-                {
-                    SelectFileAndProcessRequestFile();                    
-                }
-                else if (menuStr == "5")
-                {
-                    RemoveBookedConsultation();
+                    case "1":
+                        _resultHelper.PrintAllBookedConsultations(_consultationBooker);
+                        break;
+                    case "2":
+                        _resultHelper.PrintAllRegisteredPatients(_consultationBooker);
+                        break;
+                    case "3":
+                        _resultHelper.PrintAvailableResources(_resourcesRepository);
+                        break;
+                    case "4":
+                        SelectAndProcessRequestFile();
+                        break;
+                    case "5":
+                        RemoveScheduledConsultation();
+                        break;
                 }
 
                 _resultHelper.PrintMenu();
-                menuStr = Console.ReadLine();
+                menuStr = System.Console.ReadLine();
             }
         }
 
-        private void RemoveBookedConsultation()
+        private void RemoveScheduledConsultation()
         {
-            Console.Write("Enter id of booked consultation to remove: ");
-            var id = Console.ReadLine();
+            System.Console.Write("Enter id of scheduled consultation to remove: ");
+            var id = System.Console.ReadLine();
             _consultationBooker.RemovedScheduledConsultation(id);
         }
 
-        private void SelectFileAndProcessRequestFile()
+        private void SelectAndProcessRequestFile()
         {
-            Console.Write("Enter csv-file to load: ");
-            var file = Console.ReadLine();
+            System.Console.Write("Enter csv-file to load: ");
+            var file = System.Console.ReadLine();
             var today = DateTime.Now.Date;
             LoadAndProcessRequestFile(file,today);
         }

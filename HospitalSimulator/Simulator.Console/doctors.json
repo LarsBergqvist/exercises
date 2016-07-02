@@ -1,0 +1,21 @@
+[
+  {
+    "name": "John",
+    "roles": [
+      "Oncologist"
+    ]
+  },
+  {
+    "name": "Anna",
+    "roles": [
+      "GeneralPractioner"
+    ]
+  },
+  {
+    "name": "Peter",
+    "roles": [
+      "Oncologist",
+      "GeneralPractioner"
+    ]
+  }
+]

@@ -44,7 +44,7 @@
     <Compile Include="RequestsFileReader.cs" />
     <Compile Include="ResourceCalendarTests.cs" />
     <Compile Include="ResourcesRepositoryTests.cs" />
-    <Compile Include="TestDataGenerator.cs" />
+    <Compile Include="ResourceCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

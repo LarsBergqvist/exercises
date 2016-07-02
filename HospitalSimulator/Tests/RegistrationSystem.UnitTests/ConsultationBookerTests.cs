@@ -21,7 +21,7 @@ namespace RegistrationSystem.UnitTests
             _consultationBooker = _factory.ConsultationBooker;
             var resourceRepository = _factory.ResourcesRepository;
             resourceRepository.Clear();
-            var testDataGenerator = new TestDataGenerator();
+            var testDataGenerator = new ResourceCreator();
             testDataGenerator.SetupResourcesSet1(resourceRepository);
             _resourceCalendar = _factory.ResourceCalendar;
         }

@@ -10,7 +10,7 @@ namespace RegistrationSystem.UnitTests
     public class ResourceCalendarTests
     {
         private IResourcesRepository _resourceRepository;
-        private TestDataGenerator _testDataGenerator;
+        private ResourceCreator _testDataGenerator;
         private IResourceCalendar _resourceCalendar;
         private IConsultationsRepository _consultationsRepository;
         private DateTime _today;
@@ -20,7 +20,7 @@ namespace RegistrationSystem.UnitTests
         public void TestFixtureSetUp()
         {
             _factory.BindDependencies();
-            _testDataGenerator = new TestDataGenerator();
+            _testDataGenerator = new ResourceCreator();
             _resourceRepository = _factory.ResourcesRepository;
             _resourceCalendar = _factory.ResourceCalendar;
             _consultationsRepository = _factory.ConsultationsRepository;
