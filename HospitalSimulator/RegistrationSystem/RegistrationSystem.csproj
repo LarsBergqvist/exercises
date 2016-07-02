@@ -34,7 +34,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DoctorRoles.cs" />
+    <Compile Include="DoctorRoleConditionMap.cs" />
     <Compile Include="Fakes\ConsultationsRepository.cs" />
     <Compile Include="ConsultationBooker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

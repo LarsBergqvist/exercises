@@ -15,7 +15,7 @@ namespace Simulator.Console
 
     public class RequestsFileReader
     {
-        public static void ProcessRequestsFile(string file, DateTime registrationDate, IConsultationBooker consultationBooker, ResultHelper resultHelper)
+        public static void ProcessRequestsFile(string file, DateTime registrationDate, IConsultationBooker consultationBooker, PrintHelper resultHelper)
         {
             var requests = GetRequestsFromCsvFile(file);
 
@@ -54,8 +54,8 @@ namespace Simulator.Console
             {
                 using (var reader = new StreamReader(File.OpenRead(filePath)))
                 {
-                    List<string> listA = new List<string>();
-                    List<string> listB = new List<string>();
+                    var listA = new List<string>();
+                    var listB = new List<string>();
                     while (!reader.EndOfStream)
                     {
                         var line = reader.ReadLine();

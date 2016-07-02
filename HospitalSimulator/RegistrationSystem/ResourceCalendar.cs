@@ -57,7 +57,7 @@ namespace RegistrationSystem
             int firstDayIndex = _dateToIndexMap[earliestDate.Date];
             int numDaysToCheck = _numberOfDays - firstDayIndex;
 
-            var doctorRolesMap = new DoctorRoles();
+            var doctorRoleConditionMap = new DoctorRoleConditionMap();
 
             for (int day = firstDayIndex; day <= numDaysToCheck; day++)
             {
@@ -69,7 +69,7 @@ namespace RegistrationSystem
                     var doctorName = doctorNameCalendar.Key;
                     var docCal = doctorNameCalendar.Value;
 
-                    if (!IsDoctorSuitableAndFree(doctorName, day, docCal, condition, doctorRolesMap, _resourcesRepository))
+                    if (!IsDoctorSuitableAndFree(doctorName, day, docCal, condition, doctorRoleConditionMap, _resourcesRepository))
                         continue;
 
                     //
@@ -159,7 +159,7 @@ namespace RegistrationSystem
                 _dateToIndexMap.Clear();
         }
 
-        private bool IsDoctorSuitableAndFree(string doctorName, int day, CalenderDay[] docCal, ConditionType condition, DoctorRoles doctorRolesMap, IResourcesRepository resourcesRepository)
+        private bool IsDoctorSuitableAndFree(string doctorName, int day, CalenderDay[] docCal, ConditionType condition, DoctorRoleConditionMap doctorRoleConditionMap, IResourcesRepository resourcesRepository)
         {
             var doctor = resourcesRepository.GetDoctorByName(doctorName);
             if (doctor == null) return false;
@@ -167,7 +167,7 @@ namespace RegistrationSystem
             bool okDoctorForCondition = false;
             foreach (var role in doctor.Roles)
             {
-                if (doctorRolesMap.CanRoleHandeCondition(role, condition))
+                if (doctorRoleConditionMap.CanRoleHandeCondition(role, condition))
                     okDoctorForCondition = true;
             }
 

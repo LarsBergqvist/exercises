@@ -3,11 +3,11 @@ using RegistrationSystem.Contract;
 
 namespace RegistrationSystem
 {
-    public class DoctorRoles
+    public class DoctorRoleConditionMap
     {
         private readonly Dictionary<ConditionType, RoleType> _conditionToRoleMap;
 
-        public DoctorRoles()
+        public DoctorRoleConditionMap()
         {
             _conditionToRoleMap = new Dictionary<ConditionType, RoleType>
             {

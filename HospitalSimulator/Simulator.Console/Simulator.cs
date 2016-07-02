@@ -8,7 +8,7 @@ namespace Simulator.Console
     {
         private IConsultationBooker _consultationBooker;
         private IResourcesRepository _resourcesRepository;
-        private ResultHelper _resultHelper;
+        private PrintHelper _resultHelper;
 
         public void StartMenu()
         {          
@@ -19,7 +19,7 @@ namespace Simulator.Console
         {
             var factory = new RegistrationSystem.DI.Factory();
 
-            _resultHelper = new ResultHelper();
+            _resultHelper = new PrintHelper();
 
             factory.BindDependencies();
 

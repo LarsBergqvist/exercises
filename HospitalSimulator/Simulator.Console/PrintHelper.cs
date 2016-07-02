@@ -4,7 +4,7 @@ using RegistrationSystem.Contract.Resources;
 
 namespace Simulator.Console
 {
-    public class ResultHelper
+    public class PrintHelper
     {
         private const string _dateFormat = "yyyy-MM-dd";
 
@@ -60,6 +60,7 @@ namespace Simulator.Console
             PrintRoom(consultation.Room);
             System.Console.WriteLine("Id: {0}",consultation.Id);
             System.Console.WriteLine("Registration date: {0}", consultation.RegistrationDate.Date.ToString(_dateFormat));
+            System.Console.WriteLine("Condition: {0}",consultation.ConditionType);
             System.Console.WriteLine();
         }
 

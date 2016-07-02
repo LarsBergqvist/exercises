@@ -12,7 +12,7 @@ namespace Simulator.Console
         {
             try
             {
-                var doctors = new List<Doctor>();
+                List<Doctor> doctors;
                 using (StreamReader file = File.OpenText(jsonFile))
                 {
                     var serializer = new JsonSerializer();
@@ -34,7 +34,7 @@ namespace Simulator.Console
         {
             try
             {
-                var rooms = new List<TreatmentRoom>();
+                List<TreatmentRoom> rooms;
                 using (StreamReader file = File.OpenText(jsonFile))
                 {
                     var serializer = new JsonSerializer();
