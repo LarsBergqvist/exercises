@@ -22,7 +22,7 @@ namespace RegistrationSystem
         {
             try
             {
-                DateTime earliestDate = consultationRequest.RegistrationDate.Date.AddDays(1);
+                var earliestDate = consultationRequest.RegistrationDate.Date.AddDays(1);
                 var consultation = _resourceCalendar.ScheduleFirstAvailable(consultationRequest.PatientName, consultationRequest.RegistrationDate, consultationRequest.Condition, earliestDate);
                 if (consultation != null)
                 {

@@ -35,8 +35,9 @@ namespace RegistrationSystem.Contract
         ICollection<PatientRecord> GetAllRegisteredPatients();
 
         /// <summary>
-        /// Gets a collection of all consultation records in the system
+        /// Gets a collection of all consultation records in the system from a specified date and onwards
         /// </summary>
+        /// <param name="fromDate">The earliest consultation date to for consultation records to return</param>
         /// <returns>A collection of consultation records</returns>
         ICollection<Consultation> GetAllScheduledConsultations(DateTime fromDate);
 
@@ -47,6 +48,12 @@ namespace RegistrationSystem.Contract
         /// <returns></returns>
         void RemoveScheduledConsultation(string id);
 
+        /// <summary>
+        /// Initializes the system with a date range that can be used for requests
+        /// </summary>
+        /// <param name="calenderStartDate">The first date for the calendar in the system</param>
+        /// <param name="sizeInDays">The number of days from start date that can be handled</param>
+        /// <returns></returns>
         void Init(DateTime calenderStartDate, uint sizeInDays);
     }
 }
