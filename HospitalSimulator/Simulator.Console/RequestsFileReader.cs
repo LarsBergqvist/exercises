@@ -23,6 +23,11 @@ namespace Simulator.Console
             foreach (var entry in requests)
             {
                 string patientName = entry.PatientName;
+                if (patientName.Trim().Length == 0)
+                {
+                    System.Console.WriteLine(string.Format("An empty patient name was found in file {0}.",file));
+                    continue;
+                }
                 string conditionAsString = entry.ConditionType;
                 ConditionType condition;
                 if (Enum.TryParse(conditionAsString, true, out condition))
@@ -42,7 +47,7 @@ namespace Simulator.Console
                 }
                 else
                 {
-                    System.Console.WriteLine("Can not parse condition type {0} in file {1}", conditionAsString, file);
+                    System.Console.WriteLine("Can not parse condition type '{0}' in file {1}", conditionAsString, file);
                 }
             }
         }
